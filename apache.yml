@@ -1,0 +1,16 @@
+- hosts: apache
+  become: True
+  tasks:
+    - name: Install apache
+      dnf:
+        name: httpd
+        state: present
+    - name: Start and enable apache
+      service:
+        name: httpd
+        state: started
+        enabled: Yes
+    - name: copy html code to apache
+      copy:
+        src: index.html
+        dest: /var/www/html/
