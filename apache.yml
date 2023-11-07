@@ -5,12 +5,35 @@
       dnf:
         name: httpd
         state: present
+      tags:
+        - install
     - name: Start and enable apache
       service:
         name: httpd
         state: started
         enabled: Yes
+      tags:
+        - start
+        - enable
     - name: copy html code to apache
       copy:
         src: index.html
         dest: /var/www/html/
+      tags:
+        - deploy
+    - name: Configure default port
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        insertafter: '^#Listen'
+        line: "Listen 80"
+      tags:
+        - configure
+      notify:
+        - restart apache
+  handlers:    
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
+

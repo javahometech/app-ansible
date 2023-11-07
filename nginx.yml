@@ -1,0 +1,23 @@
+- hosts: nginx
+  become: True
+  tasks:
+    - name: Install nginx
+      dnf:
+        name: nginx
+        state: present
+    - name: start and enable
+      service:
+        name: nginx
+        state: started
+        enabled: True
+    - name: Configure load balancer
+      template:
+        src: nginx.conf
+        dest: /etc/nginx/conf.d/lb.conf
+      notify:
+        - Restart nginx
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
