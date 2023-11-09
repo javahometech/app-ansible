@@ -1,0 +1,19 @@
+---
+# tasks file for apache
+- name: install httpd
+  dnf:
+    name: httpd
+    state: present
+- name: Deploy html file
+  copy:
+    src: index.html
+    dest: /var/www/html/
+- name: set default port
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: Listen "{{ httpd_port }}"
+  notify:
+    - restart apache
+

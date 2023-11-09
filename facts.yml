@@ -1,8 +1,0 @@
-- hosts: all
-  become: True
-  tasks:
-    - name: Install git on Linux servers
-      dnf:
-        name: git
-        state: present
-      when: ansible_os_family == "Debian"
