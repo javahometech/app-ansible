@@ -1,0 +1,11 @@
+- hosts: apache
+  become: True
+  tasks:
+    - name: install required packages
+      dnf:
+        name: "{{item}}"
+        state: present
+      loop:
+        - git
+        - docker
+        - httpd
